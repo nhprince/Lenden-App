@@ -100,6 +100,10 @@ exports.login = async (req, res) => {
             }
         }
 
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid credentials' });
+        }
+
         // Check if verified (Only for owners)
         if (userType === 'owner' && !user.is_verified) {
             return res.status(403).json({

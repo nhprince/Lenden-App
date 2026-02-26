@@ -14,7 +14,18 @@ const path = require('path');
 
 // CORS Configuration for Production
 const corsOptions = {
-  origin: process.env.FRONTEND_ORIGIN || 'https://lenden.nhprince.dpdns.org',
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    const allowedOrigins = [
+      process.env.FRONTEND_ORIGIN || 'https://lenden.nhprince.dpdns.org',
+      'https://lenden.cyberslayersagency.com'
+    ];
+    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Shop-Id'],

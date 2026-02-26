@@ -34,20 +34,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     }
 
     setState(() => _isLoading = true);
-    final success = await ref.read(authProvider.notifier).login(
+    final error = await ref.read(authProvider.notifier).login(
           _emailController.text.trim(),
           _passwordController.text,
         );
     setState(() => _isLoading = false);
 
-    if (success && mounted) {
+    if (error == null && mounted) {
       // Load shops after login
       await ref.read(shopProvider.notifier).loadShops();
       if (mounted) context.go('/select-shop');
     } else if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Invalid credentials'),
+        SnackBar(
+          content: Text(error ?? 'Invalid credentials'),
           backgroundColor: Colors.red,
         ),
       );

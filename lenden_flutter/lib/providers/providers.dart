@@ -59,7 +59,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  Future<bool> login(String email, String password) async {
+  Future<String?> login(String email, String password) async {
     try {
       final response = await _api.dio.post('/api/auth/login', data: {
         'email': email,
@@ -82,9 +82,14 @@ class AuthNotifier extends StateNotifier<AuthState> {
         isAuthenticated: true,
       );
 
-      return true;
+      return null; // Success
+    } on DioException catch (e) {
+      if (e.response?.data is Map) {
+        return e.response?.data['message'] ?? 'Login failed';
+      }
+      return 'Connection error';
     } catch (e) {
-      return false;
+      return 'An unexpected error occurred';
     }
   }
 
