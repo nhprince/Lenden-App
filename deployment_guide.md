@@ -1,70 +1,35 @@
 # Lenden Deployment & Release Guide
 
-This guide provides step-by-step instructions for deploying the Lenden Backend to a production server (cPanel) and generating the final Android APK for the Flutter application using Google IDX.
+This guide provides step-by-step instructions for deploying the Lenden Backend to a production server (cPanel) and generating the final Android APK using **GitHub Actions** (Automated build).
 
 ---
 
-## 🚀 Part 1: GitHub to IDX Sync (Build Preparations)
+## 🚀 Part 1: Generate the APK (GitHub Actions)
 
-Since local builds can be hardware-intensive, follow these steps to push your fixes and build in the cloud.
+Since local machines and IDX can have hardware/disk constraints, we use GitHub's servers to build the app for you.
 
-### 1. Push Fixes from Local Machine
-Run these in your local terminal:
-```bash
-# Verify your changes
-git status
+### 1. Trigger the Build
+- Push your latest changes to GitHub:
+  ```bash
+  git add .
+  git commit -m "Trigger GitHub Build"
+  git push origin main
+  ```
+- Alternatively, go to your GitHub Repository -> **Actions** tab -> **Build Flutter APK** -> **Run workflow**.
 
-# Add and commit (I have already done this for you)
-# git add .
-# git commit -m "Finalize IDX build fixes"
-
-# Push to GitHub
-git push origin main
-```
-
-### 2. Pull Changes in Google IDX
-In your Google IDX workspace terminal:
-```bash
-# Navigate to the project root
-cd ~/Lenden-App
-
-# Pull the latest fixes
-git pull origin main
-
-# Navigate to the Flutter directory
-cd lenden_flutter
-
-# Refresh dependencies
-flutter pub get
-
-# Generate localizations (if needed)
-flutter gen-l10n
-```
+### 2. Download the APK
+1.  Go to your GitHub repository on the web.
+2.  Click on the **Actions** tab.
+3.  Click on the latest "Build Flutter APK" run (it will take ~5-7 minutes to finish).
+4.  Scroll down to the **Artifacts** section at the bottom.
+5.  Click on **app-release** to download your production APK.
 
 ---
 
-## 📱 Part 2: Generate the Production APK (Google IDX)
-
-### 1. Update API Constants (Production)
-In IDX, ensure [constants.dart](file:///home/nhprince/Workspace/Lenden-App/lenden_flutter/lib/core/app/constants.dart) points to your production backend:
-```dart
-static const String apiBaseUrl = 'https://api.yourdomain.com';
-```
-
-### 2. Build the APK
-In the IDX terminal (inside `lenden_flutter` folder):
-```bash
-flutter build apk --release
-```
-- **Location**: `lenden_flutter/build/app/outputs/flutter-apk/app-release.apk`
-- **Download**: Right-click the `.apk` file in the IDX file explorer and select **Download**.
-
----
-
-## 🌐 Part 3: Backend Deployment (cPanel)
+## 📱 Part 2: Backend Deployment (cPanel)
 
 ### 1. Build and Upload
-- Run `./build-production.sh` in the root.
+- Run `./build-production.sh` in the local root folder.
 - Compress the `dist/` folder into `backend.zip`.
 - Upload and extract to your cPanel folder.
 
@@ -82,8 +47,9 @@ flutter build apk --release
 
 ---
 
-## ✅ Verification Checklist
-- [ ] Visit `https://api.yourdomain.com/api/health` -> Success.
-- [ ] Install APK on Android -> Verify Login.
-- [ ] POS Sale -> Verify PDF generation and currency (`BTDT`).
-- [ ] Navigation -> Check if "Offline" bar appears when data is off.
+## ✅ Post-Deployment Verification
+
+1.  **Health Check**: Visit `https://api.yourdomain.com/api/health`.
+2.  **App Login**: Install the APK downloaded from GitHub Actions and log in.
+3.  **POS Sale**: Verify PDF generation and currency (`BTDT`).
+4.  **Language Test**: Toggle English/Bengali in Settings.

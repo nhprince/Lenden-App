@@ -1,0 +1,39 @@
+name: Build Flutter APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          
+      - name: Install dependencies
+        run: |
+          cd lenden_flutter
+          flutter pub get
+          flutter gen-l10n
+          
+      - name: Create asset directories
+        run: |
+          cd lenden_flutter
+          mkdir -p assets/images assets/icons
+          
+      - name: Build APK
+        run: |
+          cd lenden_flutter
+          flutter build apk --release --no-tree-shake-icons
+          
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-release
+          path: lenden_flutter/build/app/outputs/flutter-apk/app-release.apk
