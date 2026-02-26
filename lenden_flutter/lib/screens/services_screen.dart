@@ -131,7 +131,7 @@ class _ServiceTile extends StatelessWidget {
           child: const Icon(LucideIcons.settings, color: AppTheme.primary600, size: 20),
         ),
         title: Text(service.name, style: const TextStyle(fontWeight: FontWeight.w700)),
-        subtitle: Text('${isEn ? 'Charge' : 'সার্ভিস চার্জ'}: ৳${service.serviceCharge.toStringAsFixed(0)}'),
+        subtitle: Text('${isEn ? 'Charge' : 'সার্ভিস চার্জ'}: BTDT ${service.serviceCharge.toStringAsFixed(0)}'),
         trailing: IconButton(
           icon: const Icon(LucideIcons.edit3, size: 20),
           onPressed: () => _showServiceForm(context),

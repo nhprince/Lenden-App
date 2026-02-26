@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import '../providers/providers.dart';
+import '../app/theme.dart';
 import 'notification_bell.dart';
 
 /// App Shell — provides bottom navigation and drawer for the main app screens.
@@ -21,7 +23,7 @@ class _AppShellState extends ConsumerState<AppShell> {
   static const _navItems = [
     _NavItem('/dashboard', LucideIcons.layoutDashboard, 'Dashboard', 'ড্যাশবোর্ড'),
     _NavItem('/pos', LucideIcons.shoppingCart, 'POS', 'বিক্রয়'),
-    _NavItem('/products', LucideIcons.package_, 'Inventory', 'মজুদ'),
+    _NavItem('/products', LucideIcons.package, 'Inventory', 'মজুদ'),
     _NavItem('/transactions', LucideIcons.receipt, 'Transactions', 'লেনদেন'),
     _NavItem('/settings', LucideIcons.settings, 'More', 'আরো'),
   ];
@@ -29,7 +31,7 @@ class _AppShellState extends ConsumerState<AppShell> {
   static const _drawerItems = [
     _NavItem('/dashboard', LucideIcons.layoutDashboard, 'Dashboard', 'ড্যাশবোর্ড'),
     _NavItem('/pos', LucideIcons.shoppingCart, 'POS', 'বিক্রয় কেন্দ্র'),
-    _NavItem('/products', LucideIcons.package_, 'Inventory', 'মজুদ পণ্য'),
+    _NavItem('/products', LucideIcons.package, 'Inventory', 'মজুদ পণ্য'),
     _NavItem('/customers', LucideIcons.users, 'Customers', 'গ্রাহক তালিকা'),
     _NavItem('/transactions', LucideIcons.receipt, 'Transactions', 'লেনদেন'),
     _NavItem('/expenses', LucideIcons.wallet, 'Expenses', 'খরচপাতি'),

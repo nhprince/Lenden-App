@@ -148,7 +148,7 @@ class _CustomerTile extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              '৳${customer.totalDue.toStringAsFixed(0)}',
+              'BTDT ${customer.totalDue.toStringAsFixed(0)}',
               style: TextStyle(
                 fontWeight: FontWeight.w800,
                 color: customer.totalDue > 0 ? AppTheme.danger500 : Colors.green,
@@ -316,9 +316,9 @@ class _CustomerDetailsSheetState extends ConsumerState<_CustomerDetailsSheet> {
             const SizedBox(height: 32),
             Row(
               children: [
-                _StatItem(label: isEn ? 'Total Spent' : 'মোট কেনাকাটা', value: '৳${widget.customer.totalSpent.toStringAsFixed(0)}', color: AppTheme.primary600),
+                _StatItem(label: isEn ? 'Total Spent' : 'মোট কেনাকাটা', value: 'BTDT ${widget.customer.totalSpent.toStringAsFixed(0)}', color: AppTheme.primary600),
                 const SizedBox(width: 12),
-                _StatItem(label: isEn ? 'Total Due' : 'মোট বাকি', value: '৳${widget.customer.totalDue.toStringAsFixed(0)}', color: AppTheme.danger500),
+                _StatItem(label: isEn ? 'Total Due' : 'মোট বাকি', value: 'BTDT ${widget.customer.totalDue.toStringAsFixed(0)}', color: AppTheme.danger500),
               ],
             ),
             const SizedBox(height: 32),
@@ -330,7 +330,7 @@ class _CustomerDetailsSheetState extends ConsumerState<_CustomerDetailsSheet> {
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   hintText: isEn ? 'Enter amount...' : 'টাকার পরিমাণ লিখুন...',
-                  prefixText: '৳ ',
+                  prefixText: 'BTDT  ',
                 ),
               ),
               const SizedBox(height: 16),

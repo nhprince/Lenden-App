@@ -182,6 +182,11 @@ class Product {
         'material_cost': materialCost,
         'image_url': imageUrl,
       };
+
+  // UI Compat Aliases
+  String? get image => imageUrl;
+  String? get engineNumber => engineNo;
+  String? get chassisNumber => chassisNo;
 }
 
 // ─── Customer ──────────────────────────────────────────────
@@ -214,6 +219,9 @@ class Customer {
         totalSpent: _toDouble(json['total_spent']),
       );
 
+  // UI Compat Aliases
+  String? get lastVisit => null; // To be implemented if backend supports it
+
   Map<String, dynamic> toJson() => {
         'name': name,
         'phone': phone,
@@ -231,6 +239,7 @@ class Vendor {
   final String? email;
   final String? address;
   final double totalPayable;
+  final double totalPurchases;
 
   Vendor({
     required this.id,
@@ -240,6 +249,7 @@ class Vendor {
     this.email,
     this.address,
     this.totalPayable = 0,
+    this.totalPurchases = 0,
   });
 
   factory Vendor.fromJson(Map<String, dynamic> json) => Vendor(
@@ -250,6 +260,7 @@ class Vendor {
         email: json['email'],
         address: json['address'],
         totalPayable: _toDouble(json['total_payable'] ?? json['payable']),
+        totalPurchases: _toDouble(json['total_purchases']),
       );
 
   Map<String, dynamic> toJson() => {
@@ -266,6 +277,7 @@ class Transaction {
   final double amount;
   final double paidAmount;
   final double? dueAmount;
+  final double? discount;
   final String? paymentMethod;
   final String? referenceNo;
   final String? description;
@@ -276,6 +288,7 @@ class Transaction {
   final String? customerName;
   final int? vendorId;
   final String? vendorName;
+  final String? customerPhone;
 
   Transaction({
     required this.id,
@@ -293,6 +306,8 @@ class Transaction {
     this.customerName,
     this.vendorId,
     this.vendorName,
+    this.customerPhone,
+    this.discount = 0.0,
   });
 
   factory Transaction.fromJson(Map<String, dynamic> json) => Transaction(
@@ -311,7 +326,12 @@ class Transaction {
         customerName: json['customer_name'] ?? json['customer_name_snapshot'],
         vendorId: json['vendor_id'] is int ? json['vendor_id'] : null,
         vendorName: json['vendor_name'],
+        customerPhone: json['customer_phone'] ?? json['customer_phone_snapshot'],
+        discount: _toDouble(json['discount']),
       );
+
+  // UI Compat Aliases
+  String? get note => description;
 }
 
 // ─── Service ───────────────────────────────────────────────
@@ -360,19 +380,12 @@ class Trip {
   final String? customerName;
   final String status;
 
-  Trip({
-    required this.id,
-    required this.vehicleNo,
-    this.driverName,
-    this.destination,
-    this.startDate,
-    this.endDate,
-    required this.tripFare,
-    this.expenses = 0,
-    this.customerId,
-    this.customerName,
-    this.status = 'ongoing',
-  });
+  Trip({required this.id, required this.vehicleNo, this.driverName, this.destination, this.startDate, this.endDate, required this.tripFare, this.expenses = 0, this.customerId, this.customerName, this.status = 'ongoing'});
+
+  // UI Compat Aliases
+  double get fare => tripFare;
+  String? get date => startDate;
+  String? get driverNameSnapshot => driverName;
 
   factory Trip.fromJson(Map<String, dynamic> json) => Trip(
         id: json['id'] is int ? json['id'] : int.parse('${json['id']}'),
@@ -462,6 +475,23 @@ class AppNotification {
         message: json['message'] ?? '',
         isRead: json['is_read'] == true || json['is_read'] == 1,
         createdAt: json['created_at'],
+      );
+
+  AppNotification copyWith({
+    int? id,
+    String? type,
+    String? title,
+    String? message,
+    bool? isRead,
+    String? createdAt,
+  }) =>
+      AppNotification(
+        id: id ?? this.id,
+        type: type ?? this.type,
+        title: title ?? this.title,
+        message: message ?? this.message,
+        isRead: isRead ?? this.isRead,
+        createdAt: createdAt ?? this.createdAt,
       );
 }
 

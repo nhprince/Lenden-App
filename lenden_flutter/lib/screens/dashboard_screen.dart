@@ -91,19 +91,19 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   children: [
                     _StatCard(
                       label: isEn ? "Today's Sales" : "আজকের বিক্রয়",
-                      value: '৳${_stats['todaySales']?.toStringAsFixed(0) ?? '0'}',
+                      value: 'BTDT ${_stats['todaySales']?.toStringAsFixed(0) ?? '0'}',
                       icon: LucideIcons.trendingUp,
                       color: Colors.green,
                     ),
                     _StatCard(
                       label: isEn ? "Total Expenses" : "মোট খরচ",
-                      value: '৳${_stats['totalExpenses']?.toStringAsFixed(0) ?? '0'}',
+                      value: 'BTDT ${_stats['totalExpenses']?.toStringAsFixed(0) ?? '0'}',
                       icon: LucideIcons.wallet,
                       color: Colors.red,
                     ),
                     _StatCard(
                       label: isEn ? "Stock Value" : "মজুদ মূল্য",
-                      value: '৳${_stats['inventoryValue']?.toStringAsFixed(0) ?? '0'}',
+                      value: 'BTDT ${_stats['inventoryValue']?.toStringAsFixed(0) ?? '0'}',
                       icon: LucideIcons.package2,
                       color: Colors.blue,
                     ),
@@ -291,7 +291,7 @@ class _TxnListItem extends StatelessWidget {
           Container(width: 40, height: 40, decoration: BoxDecoration(color: color.withValues(alpha: 0.1), shape: BoxShape.circle), child: Icon(transaction.type == 'SALE' ? LucideIcons.arrowDownLeft : LucideIcons.arrowUpRight, color: color, size: 18)),
           const SizedBox(width: 12),
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(transaction.customerName ?? transaction.vendorName ?? (isEn ? 'General' : 'সাধারণ'), style: const TextStyle(fontWeight: FontWeight.w600)), Text(transaction.date.toString().split(' ')[0], style: TextStyle(color: AppTheme.textLight, fontSize: 11))])),
-          Text('${transaction.type == 'SALE' ? '+' : '-'}৳${transaction.amount.toStringAsFixed(0)}', style: TextStyle(fontWeight: FontWeight.w800, color: color)),
+          Text('${transaction.type == 'SALE' ? '+' : '-'}BTDT ${transaction.amount.toStringAsFixed(0)}', style: TextStyle(fontWeight: FontWeight.w800, color: color)),
         ],
       ),
     );

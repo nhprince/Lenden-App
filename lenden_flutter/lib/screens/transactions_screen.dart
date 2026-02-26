@@ -167,7 +167,7 @@ class _TransactionTile extends StatelessWidget {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      '${_formatDate(transaction.date)} • ${transaction.paymentMethod?.toUpperCase()}',
+                      '${_formatDate(DateTime.tryParse(transaction.date ?? '') ?? DateTime.now())} • ${transaction.paymentMethod?.toUpperCase()}',
                       style: TextStyle(color: AppTheme.textLight, fontSize: 11),
                     ),
                   ],
@@ -177,7 +177,7 @@ class _TransactionTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    '${_getTypePrefix(transaction.type)}৳${transaction.amount.toStringAsFixed(0)}',
+                    '${_getTypePrefix(transaction.type)}BTDT ${transaction.amount.toStringAsFixed(0)}',
                     style: TextStyle(fontWeight: FontWeight.w800, color: color, fontSize: 16),
                   ),
                   _StatusBadge(status: transaction.status, isEn: isEn),
@@ -269,7 +269,7 @@ class _TransactionDetailSheetState extends ConsumerState<_TransactionDetailSheet
   @override
   Widget build(BuildContext context) {
     final shop = ref.watch(shopProvider).currentShop;
-
+    final isEn = ref.watch(languageProvider) == 'en';
     return DraggableScrollableSheet(
       initialChildSize: 0.7,
       builder: (_, controller) => Container(
@@ -295,14 +295,14 @@ class _TransactionDetailSheetState extends ConsumerState<_TransactionDetailSheet
             _KeyValue(label: widget.isEn ? 'Type' : 'ধরণ', value: widget.transaction.type),
             _KeyValue(label: widget.isEn ? 'Status' : 'অবস্থা', value: widget.transaction.status),
             const Divider(height: 32),
-            _KeyValue(label: widget.isEn ? 'Total Amount' : 'সর্বমোট', value: '৳${widget.transaction.amount.toStringAsFixed(0)}', isBold: true),
-            _KeyValue(label: widget.isEn ? 'Paid Amount' : 'পরিশোধিত', value: '৳${widget.transaction.paidAmount.toStringAsFixed(0)}', color: Colors.green),
-            _KeyValue(label: widget.isEn ? 'Balance Due' : 'বাকি', value: '৳${widget.transaction.dueAmount.toStringAsFixed(0)}', color: Colors.red, isBold: true),
+            _KeyValue(label: isEn ? 'Total Amount' : 'সর্বমোট', value: 'BTDT ${widget.transaction.amount.toStringAsFixed(2)}', isBold: true),
+            _KeyValue(label: isEn ? 'Paid Amount' : 'পরিশোধিত', value: 'BTDT ${widget.transaction.paidAmount.toStringAsFixed(2)}', color: Colors.green),
+            _KeyValue(label: isEn ? 'Balance Due' : 'বাকি', value: 'BTDT ${widget.transaction.dueAmount?.toStringAsFixed(2) ?? "0.00"}', color: Colors.red, isBold: true),
             const SizedBox(height: 24),
             _KeyValue(label: widget.isEn ? 'Customer/Vendor' : 'গ্রাহক/সরবরাহকারী', value: widget.transaction.customerName ?? widget.transaction.vendorName ?? '-'),
             _KeyValue(label: widget.isEn ? 'Payment Method' : 'পেমেন্ট মাধ্যম', value: widget.transaction.paymentMethod?.toUpperCase() ?? '-'),
-            if (widget.transaction.note != null && widget.transaction.note!.isNotEmpty)
-              _KeyValue(label: widget.isEn ? 'Note' : 'নোট', value: widget.transaction.note!),
+            if (widget.transaction.description != null && widget.transaction.description!.isNotEmpty)
+              _KeyValue(label: widget.isEn ? 'Note' : 'নোট', value: widget.transaction.description!),
             const SizedBox(height: 40),
             if (widget.transaction.type == 'SALE')
               SizedBox(

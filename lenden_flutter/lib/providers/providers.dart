@@ -290,6 +290,10 @@ class LanguageNotifier extends StateNotifier<String> {
     const storage = FlutterSecureStorage();
     await storage.write(key: AppConstants.languageKey, value: lang);
   }
+
+  void toggleLanguage() {
+    setLanguage(state == 'en' ? 'bn' : 'en');
+  }
 }
 
 // ─── Notification State ────────────────────────────────────

@@ -148,15 +148,19 @@ class _ExpenseTile extends StatelessWidget {
           style: const TextStyle(fontWeight: FontWeight.w700),
         ),
         subtitle: Text(
-          DateFormat('dd MMM yyyy').format(expense.date),
+          _formatDate(DateTime.tryParse(expense.date ?? '') ?? DateTime.now()),
           style: TextStyle(color: AppTheme.textLight, fontSize: 12),
         ),
         trailing: Text(
-          '-৳${expense.amount.toStringAsFixed(0)}',
+          '-BTDT ${expense.amount.toStringAsFixed(2)}',
           style: const TextStyle(fontWeight: FontWeight.w800, color: Colors.red, fontSize: 16),
         ),
       ),
     );
+  }
+
+  String _formatDate(DateTime date) {
+    return DateFormat('dd MMM yyyy').format(date);
   }
 }
 
@@ -220,7 +224,7 @@ class _ExpenseFormSheetState extends ConsumerState<_ExpenseFormSheet> {
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 labelText: isEn ? 'Amount*' : 'পরিমাণ*',
-                prefixText: '৳ ',
+                prefixText: 'BTDT  ',
               ),
             ),
             const SizedBox(height: 16),

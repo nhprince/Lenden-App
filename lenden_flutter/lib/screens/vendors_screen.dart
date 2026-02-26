@@ -139,7 +139,7 @@ class _VendorTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              '৳${vendor.totalPayable.toStringAsFixed(0)}',
+              'BTDT ${vendor.totalPayable.toStringAsFixed(0)}',
               style: TextStyle(
                 fontWeight: FontWeight.w800,
                 color: vendor.totalPayable > 0 ? Colors.red : Colors.green,
@@ -311,9 +311,9 @@ class _VendorDetailsSheetState extends ConsumerState<_VendorDetailsSheet> {
             const SizedBox(height: 32),
             Row(
               children: [
-                _StatCard(label: isEn ? 'Total Purchases' : 'মোট ক্রয়', value: '৳${widget.vendor.totalPurchases.toStringAsFixed(0)}', color: AppTheme.primary600),
+                _StatCard(label: isEn ? 'Total Purchases' : 'মোট ক্রয়', value: 'BTDT ${widget.vendor.totalPurchases.toStringAsFixed(0)}', color: AppTheme.primary600),
                 const SizedBox(width: 12),
-                _StatCard(label: isEn ? 'Total Payable' : 'মোট পাওনা', value: '৳${widget.vendor.totalPayable.toStringAsFixed(0)}', color: Colors.red),
+                _StatCard(label: isEn ? 'Total Payable' : 'মোট পাওনা', value: 'BTDT ${widget.vendor.totalPayable.toStringAsFixed(0)}', color: Colors.red),
               ],
             ),
             const SizedBox(height: 32),
@@ -325,7 +325,7 @@ class _VendorDetailsSheetState extends ConsumerState<_VendorDetailsSheet> {
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   hintText: isEn ? 'Enter amount to pay...' : 'টাকার পরিমাণ লিখুন...',
-                  prefixText: '৳ ',
+                  prefixText: 'BTDT  ',
                 ),
               ),
               const SizedBox(height: 16),

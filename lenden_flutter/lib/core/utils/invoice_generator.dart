@@ -2,7 +2,9 @@ import 'dart:typed_data';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
+import 'package:intl/intl.dart';
 import '../models/models.dart';
+import '../../providers/providers.dart';
 
 class InvoiceGenerator {
   static Future<void> generateAndPrintSalesInvoice(Transaction transaction, List<CartItem> items, Shop shop) async {
@@ -32,7 +34,7 @@ class InvoiceGenerator {
                     children: [
                       pw.Text('INVOICE', style: pw.TextStyle(fontSize: 32, fontWeight: pw.FontWeight.bold, color: PdfColors.blueGrey700)),
                       pw.Text('No: #${transaction.id}'),
-                      pw.Text('Date: ${transaction.date.toString().split(' ')[0]}'),
+                      pw.Text('Date: ${_formatDate(DateTime.tryParse(transaction.date ?? '') ?? DateTime.now())}'),
                     ],
                   ),
                 ],
@@ -80,7 +82,7 @@ class InvoiceGenerator {
                       pw.Divider(),
                       _totalRow('Total:', 'BTDT ${transaction.amount.toStringAsFixed(2)}', isBold: true),
                       _totalRow('Paid:', 'BTDT ${transaction.paidAmount.toStringAsFixed(2)}'),
-                      _totalRow('Due:', 'BTDT ${transaction.dueAmount.toStringAsFixed(2)}', color: PdfColors.red700),
+                      _totalRow('Due:', 'BTDT ${transaction.dueAmount?.toStringAsFixed(2) ?? "0.00"}', color: PdfColors.red700),
                     ],
                   ),
                 ],
@@ -108,5 +110,9 @@ class InvoiceGenerator {
         pw.Text(value, style: pw.TextStyle(fontWeight: isBold ? pw.FontWeight.bold : pw.FontWeight.normal, color: color)),
       ],
     );
+  }
+
+  static String _formatDate(DateTime date) {
+    return DateFormat('dd MMM yyyy').format(date);
   }
 }

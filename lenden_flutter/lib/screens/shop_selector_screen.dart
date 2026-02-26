@@ -78,7 +78,7 @@ class _ShopSelectorScreenState extends ConsumerState<ShopSelectorScreen> {
                 const Expanded(child: Center(child: CircularProgressIndicator()))
               else if (shopState.shops.isEmpty)
                 Expanded(child: Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
-                  Icon(LucideIcons.storefront, size: 64, color: AppTheme.textLight),
+                  Icon(LucideIcons.store, size: 64, color: AppTheme.textLight),
                   const SizedBox(height: 16),
                   Text('No shops yet', style: Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 8),

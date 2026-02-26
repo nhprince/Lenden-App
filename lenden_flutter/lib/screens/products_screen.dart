@@ -87,7 +87,7 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(LucideIcons.package_, size: 48, color: AppTheme.textLight),
+                      Icon(LucideIcons.package, size: 48, color: AppTheme.textLight),
                       const SizedBox(height: 12),
                       Text(isEn ? 'No products found' : 'কোনো পণ্য পাওয়া যায়নি'),
                     ],
@@ -175,7 +175,7 @@ class _ProductTile extends StatelessWidget {
                 : null,
           ),
           child: product.image == null
-              ? const Icon(LucideIcons.package_, color: AppTheme.primary600, size: 24)
+              ? const Icon(LucideIcons.package, color: AppTheme.primary600, size: 24)
               : null,
         ),
         title: Text(
@@ -216,12 +216,12 @@ class _ProductTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              '৳${product.sellingPrice.toStringAsFixed(0)}',
+              'BTDT ${product.sellingPrice.toStringAsFixed(0)}',
               style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16, color: AppTheme.primary600),
             ),
             if (canViewProfits)
               Text(
-                '${isEn ? 'Profit' : 'লাভ'}: ৳${(product.sellingPrice - product.costPrice).toStringAsFixed(0)}',
+                '${isEn ? 'Profit' : 'লাভ'}: BTDT ${(product.sellingPrice - product.costPrice).toStringAsFixed(0)}',
                 style: const TextStyle(color: Colors.green, fontSize: 11, fontWeight: FontWeight.w600),
               ),
           ],
@@ -396,7 +396,7 @@ class _ProductFormState extends ConsumerState<_ProductForm> {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    _buildField(isEn ? 'Product Name*' : 'পণ্যের নাম*', _nameController, LucideIcons.package_, required: true),
+                    _buildField(isEn ? 'Product Name*' : 'পণ্যের নাম*', _nameController, LucideIcons.package, required: true),
                     Row(
                       children: [
                         Expanded(child: _buildField(isEn ? 'Cost Price*' : 'ক্রয় মূল্য*', _costController, LucideIcons.tag, type: TextInputType.number, required: true)),
@@ -411,7 +411,7 @@ class _ProductFormState extends ConsumerState<_ProductForm> {
                         Expanded(child: _buildField(isEn ? 'Unit' : 'একক', _unitController, LucideIcons.box, hint: 'pcs, kg, etc.')),
                       ],
                     ),
-                    _buildField('SKU / Barcode', _skuController, LucideIcons.barcode),
+                    _buildField('SKU / Barcode', _skuController, LucideIcons.qrCode),
                     _buildField(isEn ? 'Category' : 'ক্যাটাগরি', _categoryController, LucideIcons.grid),
                     
                     const Padding(

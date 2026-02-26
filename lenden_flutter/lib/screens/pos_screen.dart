@@ -109,7 +109,7 @@ class _POSScreenState extends ConsumerState<POSScreen> {
           ? FloatingActionButton.extended(
               onPressed: () => _showCartDrawer(context),
               icon: const Icon(LucideIcons.shoppingCart),
-              label: Text('${posState.items.length} ${isEn ? 'Items' : 'আইটেম'} | ৳${posState.total.toStringAsFixed(0)}'),
+              label: Text('${posState.items.length} ${isEn ? 'Items' : 'আইটেম'} | BTDT ${posState.total.toStringAsFixed(0)}'),
               backgroundColor: AppTheme.primary600,
             )
           : null,
@@ -170,7 +170,7 @@ class _ProductCard extends StatelessWidget {
                       : null,
                 ),
                 child: product.image == null 
-                  ? const Icon(LucideIcons.package_, color: AppTheme.primary600, size: 32)
+                  ? const Icon(LucideIcons.package, color: AppTheme.primary600, size: 32)
                   : null,
               ),
               const SizedBox(height: 8),
@@ -185,7 +185,7 @@ class _ProductCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '৳${product.sellingPrice.toStringAsFixed(0)}',
+                    'BTDT ${product.sellingPrice.toStringAsFixed(0)}',
                     style: const TextStyle(fontWeight: FontWeight.w800, color: AppTheme.primary600, fontSize: 14),
                   ),
                   Container(
@@ -259,7 +259,7 @@ class _CartBottomSheet extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(item.product.name, style: const TextStyle(fontWeight: FontWeight.w600)),
-                            Text('৳${item.price.toStringAsFixed(0)} × ${item.quantity}', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+                            Text('BTDT ${item.price.toStringAsFixed(0)} × ${item.quantity}', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
                           ],
                         ),
                       ),
@@ -318,8 +318,8 @@ class _CheckoutSummary extends ConsumerWidget {
       child: SafeArea(
         child: Column(
           children: [
-            _SumRow(label: isEn ? 'Subtotal' : 'সাবটোটাল', value: '৳${state.subtotal.toStringAsFixed(0)}'),
-            _SumRow(label: isEn ? 'Total' : 'সর্বমোট', value: '৳${state.total.toStringAsFixed(0)}', isBold: true),
+            _SumRow(label: isEn ? 'Subtotal' : 'সাবটোটাল', value: 'BTDT ${state.subtotal.toStringAsFixed(0)}'),
+            _SumRow(label: isEn ? 'Total' : 'সর্বমোট', value: 'BTDT ${state.total.toStringAsFixed(0)}', isBold: true),
             const SizedBox(height: 16),
             SizedBox(
               width: double.infinity,
@@ -343,7 +343,7 @@ class _CheckoutSummary extends ConsumerWidget {
                         amount: state.total,
                         paidAmount: state.paidAmount,
                         dueAmount: state.total - state.paidAmount,
-                        date: DateTime.now(),
+                        date: DateTime.now().toIso8601String(),
                         status: 'COMPLETED',
                         customerName: state.selectedCustomer?.name,
                         customerPhone: state.selectedCustomer?.phone,

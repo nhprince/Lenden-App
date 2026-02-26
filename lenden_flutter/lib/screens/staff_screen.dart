@@ -114,7 +114,7 @@ class _StaffTile extends StatelessWidget {
           backgroundColor: AppTheme.primary50,
           child: const Icon(LucideIcons.user, color: AppTheme.primary600, size: 20),
         ),
-        title: Text(staff.username, style: const TextStyle(fontWeight: FontWeight.w700)),
+        title: Text(staff.username ?? (isEn ? 'Unknown' : 'অজানা'), style: const TextStyle(fontWeight: FontWeight.w700)),
         subtitle: Row(
           children: [
             Container(
@@ -275,9 +275,10 @@ class _StaffDetailSheetState extends ConsumerState<_StaffDetailSheet> {
           ),
           const Divider(),
           const SizedBox(height: 16),
-          _InfoRow(label: isEn ? 'Username' : 'ইউজারনেম', value: widget.staff.username),
+          _InfoRow(label: isEn ? 'Username' : 'ইউজারনেম', value: widget.staff.username ?? '-'),
           _InfoRow(label: isEn ? 'Role' : 'পদবী', value: widget.staff.role.toUpperCase()),
-          _InfoRow(label: isEn ? 'Salary' : 'বেতন', value: '৳${widget.staff.salary.toStringAsFixed(0)}'),
+          _InfoRow(label: isEn ? 'Joining' : 'যোগদান', value: widget.staff.joiningDate ?? '-'),
+          _InfoRow(label: isEn ? 'Salary' : 'বেতন', value: 'BTDT ${widget.staff.salary?.toStringAsFixed(2) ?? "0.00"}'),
           _InfoRow(label: isEn ? 'Status' : 'অবস্থা', value: widget.staff.status.toUpperCase()),
           const SizedBox(height: 32),
           SizedBox(

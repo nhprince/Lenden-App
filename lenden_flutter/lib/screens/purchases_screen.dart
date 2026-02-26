@@ -120,7 +120,7 @@ class _PurchaseTile extends StatelessWidget {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(DateFormat('dd MMM yyyy').format(purchase.date), style: TextStyle(color: AppTheme.textLight, fontSize: 11)),
+            Text(_formatDate(DateTime.tryParse(purchase.date ?? '') ?? DateTime.now()), style: TextStyle(color: AppTheme.textLight, fontSize: 11)),
             if (purchase.note != null && purchase.note!.isNotEmpty)
               Text(purchase.note!, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
           ],
@@ -130,7 +130,7 @@ class _PurchaseTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              '৳${purchase.amount.toStringAsFixed(0)}',
+              'BTDT ${purchase.amount.toStringAsFixed(2)}',
               style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
             ),
             Container(
@@ -142,6 +142,10 @@ class _PurchaseTile extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _formatDate(DateTime date) {
+    return DateFormat('dd MMM yyyy').format(date);
   }
 }
 
@@ -218,7 +222,7 @@ class _PurchaseFormSheetState extends ConsumerState<_PurchaseFormSheet> {
             TextField(
               controller: _amountController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(label: Text(isEn ? 'Total Amount*' : 'সর্বমোট পরিমাণ*'), prefixText: '৳ '),
+              decoration: InputDecoration(label: Text(isEn ? 'Total Amount*' : 'সর্বমোট পরিমাণ*'), prefixText: 'BTDT  '),
             ),
             const SizedBox(height: 16),
             TextField(
@@ -247,7 +251,7 @@ class _PurchaseFormSheetState extends ConsumerState<_PurchaseFormSheet> {
         'amount': amount,
         'paid_amount': amount, // Simplified for now
         'payment_method': 'cash',
-        'note': _noteController.text,
+        'description': _noteController.text, // Corrected from 'note'
       });
       widget.onSaved();
       if (mounted) Navigator.pop(context);

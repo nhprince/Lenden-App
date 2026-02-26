@@ -115,35 +115,23 @@ class _TripTile extends StatelessWidget {
           decoration: BoxDecoration(color: AppTheme.primary50, shape: BoxShape.circle),
           child: const Icon(LucideIcons.truck, color: AppTheme.primary600, size: 20),
         ),
-        title: Text(
-          trip.destination,
-          style: const TextStyle(fontWeight: FontWeight.w700),
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('${isEn ? 'Vehicle' : 'গাড়ি'}: ${trip.vehicleNo} | ${trip.driverName}', style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
-            Text(DateFormat('dd MMM yyyy').format(trip.date), style: TextStyle(color: AppTheme.textLight, fontSize: 11)),
-          ],
-        ),
+        title: Text('${trip.vehicleNo} - ${trip.driverNameSnapshot ?? (isEn ? "Driver" : "চালক")}'),
+        subtitle: Text('${trip.destination ?? (isEn ? "Local" : "স্থান")} • ${trip.date != null ? _formatDate(DateTime.tryParse(trip.date!) ?? DateTime.now()) : (isEn ? "No Date" : "তারিখ নেই")}'),
         trailing: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Text('৳${trip.fare.toStringAsFixed(0)}', style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              decoration: BoxDecoration(color: statusColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)),
-              child: Text(
-                trip.status,
-                style: TextStyle(color: statusColor, fontSize: 10, fontWeight: FontWeight.w700),
-              ),
-            ),
+            Text('BTDT ${trip.fare.toStringAsFixed(2)}', style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text(trip.status.toUpperCase(), style: TextStyle(fontSize: 10, color: trip.status.toLowerCase() == 'completed' ? Colors.green : Colors.orange)),
           ],
         ),
         onTap: () => _showTripDetails(context),
       ),
     );
+  }
+
+  String _formatDate(DateTime date) {
+    return DateFormat('dd MMM yyyy').format(date);
   }
 
   void _showTripDetails(BuildContext context) {
@@ -288,10 +276,10 @@ class _TripDetailsSheetState extends ConsumerState<_TripDetailsSheet> {
           ),
           const Divider(),
           const SizedBox(height: 16),
-          _InfoRow(label: isEn ? 'Destination' : 'গন্তব্য', value: widget.trip.destination),
+          _InfoRow(label: isEn ? 'Destination' : 'গন্তব্য', value: widget.trip.destination ?? '-'),
           _InfoRow(label: isEn ? 'Vehicle' : 'গাড়ি', value: widget.trip.vehicleNo),
-          _InfoRow(label: isEn ? 'Driver' : 'চালক', value: widget.trip.driverName),
-          _InfoRow(label: isEn ? 'Fare' : 'ভাড়া', value: '৳${widget.trip.fare.toStringAsFixed(0)}', isBold: true),
+          _InfoRow(label: isEn ? 'Driver' : 'চালক', value: widget.trip.driverName ?? '-'),
+          _InfoRow(label: isEn ? 'Fare' : 'ভাড়া', value: 'BTDT ${widget.trip.fare.toStringAsFixed(2)}', isBold: true),
           _InfoRow(label: isEn ? 'Status' : 'অবস্থা', value: widget.trip.status),
           const SizedBox(height: 32),
           if (widget.trip.status != 'COMPLETED' && widget.trip.status != 'CANCELLED')

@@ -91,9 +91,9 @@ class _SummaryGrid extends StatelessWidget {
       crossAxisSpacing: 12,
       mainAxisSpacing: 12,
       children: [
-        _ReportCard(label: isEn ? 'Total Sales' : 'মোট বিক্রয়', value: '৳${data['totalSales']?.toStringAsFixed(0) ?? '0'}', color: Colors.green),
-        _ReportCard(label: isEn ? 'Total Expenses' : 'মোট খরচ', value: '৳${data['totalExpenses']?.toStringAsFixed(0) ?? '0'}', color: Colors.red),
-        _ReportCard(label: isEn ? 'Net Profit' : 'নিট লাভ', value: '৳${data['netProfit']?.toStringAsFixed(0) ?? '0'}', color: AppTheme.primary600),
+        _ReportCard(label: isEn ? 'Total Sales' : 'মোট বিক্রয়', value: 'BTDT ${data['totalSales']?.toStringAsFixed(0) ?? '0'}', color: Colors.green),
+        _ReportCard(label: isEn ? 'Total Expenses' : 'মোট খরচ', value: 'BTDT ${data['totalExpenses']?.toStringAsFixed(0) ?? '0'}', color: Colors.red),
+        _ReportCard(label: isEn ? 'Net Profit' : 'নিট লাভ', value: 'BTDT ${data['netProfit']?.toStringAsFixed(0) ?? '0'}', color: AppTheme.primary600),
         _ReportCard(label: isEn ? 'Growth' : 'প্রবৃদ্ধি', value: '+12.5%', color: Colors.blue),
       ],
     );
