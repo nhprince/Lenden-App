@@ -106,7 +106,6 @@ class _NotificationTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isEn = ref.watch(languageProvider) == 'en';
     final color = _getTypeColor(notification.type);
 
     return Dismissible(

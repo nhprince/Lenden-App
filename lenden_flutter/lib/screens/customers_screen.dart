@@ -201,7 +201,6 @@ class _CustomerFormState extends State<_CustomerForm> {
 
   @override
   Widget build(BuildContext context) {
-    final isEn = true; // Use a proper lang check if needed
 
     return DraggableScrollableSheet(
       initialChildSize: 0.7,
@@ -250,7 +249,7 @@ class _CustomerFormState extends State<_CustomerForm> {
         await ApiClient().dio.put('/api/customers/${widget.customer!.id}', data: data);
       }
       widget.onSaved();
-      Navigator.pop(context);
+      if (mounted) Navigator.pop(context);
     } catch (_) {
       setState(() => _isSaving = false);
     }
@@ -363,7 +362,7 @@ class _CustomerDetailsSheetState extends ConsumerState<_CustomerDetailsSheet> {
         'note': 'Manual due collection from mobile app',
       });
       widget.onUpdate();
-      Navigator.pop(context);
+      if (mounted) Navigator.pop(context);
     } catch (_) {
       setState(() => _isProcessing = false);
     }

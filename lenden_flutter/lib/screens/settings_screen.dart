@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../providers/providers.dart';
-import '../core/api/api_client.dart';
 import '../app/theme.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -52,7 +51,7 @@ class SettingsScreen extends ConsumerWidget {
             trailing: Switch(
               value: lang == 'bn',
               onChanged: (_) => ref.read(languageProvider.notifier).toggleLanguage(),
-              activeColor: AppTheme.primary600,
+              activeThumbColor: AppTheme.primary600,
             ),
           ),
           _SettingsTile(
