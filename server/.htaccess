@@ -1,0 +1,300 @@
+# ====================================================
+# LENDEN APP - BACKEND API .HTACCESS
+# Domain: api.lenden.nhprince.dpdns.org
+# Optimized for: CloudLinux Shared Hosting with Passenger
+# ====================================================
+
+# ====================================================
+# CLOUDLINUX PASSENGER CONFIGURATION (DO NOT MODIFY)
+# ====================================================
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION BEGIN
+PassengerAppRoot "/home/cybersla/api.lenden.nhprince.dpdns.org"
+PassengerBaseURI "/"
+PassengerNodejs "/home/cybersla/nodevenv/api.lenden.nhprince.dpdns.org/18/bin/node"
+PassengerAppType node
+PassengerStartupFile src/index.js
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION END
+
+# DO NOT REMOVE OR MODIFY. CLOUDLINUX ENV VARS CONFIGURATION BEGIN
+<IfModule Litespeed>
+</IfModule>
+# DO NOT REMOVE OR MODIFY. CLOUDLINUX ENV VARS CONFIGURATION END
+
+# ====================================================
+# PASSENGER PERFORMANCE SETTINGS
+# ====================================================
+# Enable Passenger for this directory
+PassengerEnabled on
+
+# Minimum instances to keep alive (adjust based on your hosting plan)
+PassengerMinInstances 1
+
+# Maximum request queue size
+PassengerMaxRequestQueueSize 100
+
+# Application environment
+PassengerAppEnv production
+
+# Enable friendly error pages in production (set to off for security)
+PassengerFriendlyErrorPages off
+
+# Memory limit per process (adjust based on your hosting limits)
+# PassengerMemoryLimit 512
+
+# ====================================================
+# CORS CONFIGURATION (Critical for API)
+# ====================================================
+<IfModule mod_headers.c>
+    # Allow requests from your frontend domain
+    Header always set Access-Control-Allow-Origin "https://lenden.nhprince.dpdns.org"
+    
+    # Allow credentials (cookies, authorization headers)
+    Header always set Access-Control-Allow-Credentials "true"
+    
+    # Allowed HTTP methods
+    Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+    
+    # Allowed headers (includes your custom Shop-Id header)
+    Header always set Access-Control-Allow-Headers "Content-Type, Authorization, Shop-Id, X-Requested-With, Accept, Origin"
+    
+    # How long to cache preflight requests (24 hours)
+    Header always set Access-Control-Max-Age "86400"
+    
+    # Expose headers to frontend
+    Header always set Access-Control-Expose-Headers "Content-Length, Content-Type"
+</IfModule>
+
+# ====================================================
+# HANDLE CORS PREFLIGHT REQUESTS
+# ====================================================
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Respond to OPTIONS requests immediately
+    RewriteCond %{REQUEST_METHOD} OPTIONS
+    RewriteRule ^(.*)$ $1 [R=200,L]
+</IfModule>
+
+# ====================================================
+# SECURITY HEADERS
+# ====================================================
+<IfModule mod_headers.c>
+    # Prevent MIME type sniffing
+    Header always set X-Content-Type-Options "nosniff"
+    
+    # Prevent clickjacking
+    Header always set X-Frame-Options "DENY"
+    
+    # XSS Protection
+    Header always set X-XSS-Protection "1; mode=block"
+    
+    # Strict Transport Security (HTTPS only) - 1 year
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    
+    # Referrer Policy
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # Content Security Policy for API (restrictive)
+    Header always set Content-Security-Policy "default-src 'none'; frame-ancestors 'none'"
+    
+    # Permissions Policy (formerly Feature Policy)
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=()"
+    
+    # Remove server information
+    Header always unset X-Powered-By
+    Header always unset Server
+    ServerSignature Off
+</IfModule>
+
+# ====================================================
+# FORCE HTTPS (SSL)
+# ====================================================
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Redirect HTTP to HTTPS
+    RewriteCond %{HTTPS} off
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+    
+    # Redirect www to non-www (optional, adjust if needed)
+    RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+    RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+</IfModule>
+
+# ====================================================
+# COMPRESSION (Improve performance)
+# ====================================================
+<IfModule mod_deflate.c>
+    # Compress JSON, text, HTML, JavaScript, CSS, XML
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    
+    # Don't compress images (already compressed)
+    SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|webp)$ no-gzip
+</IfModule>
+
+# ====================================================
+# CACHE CONTROL FOR API RESPONSES
+# ====================================================
+<IfModule mod_headers.c>
+    # No cache for API responses (ensure fresh data)
+    <FilesMatch "\.(json)$">
+        Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </FilesMatch>
+</IfModule>
+
+# ====================================================
+# PROTECT SENSITIVE FILES
+# ====================================================
+# Deny access to .env files
+<FilesMatch "^\.env">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Deny access to .git directory
+<DirectoryMatch "\.git">
+    Order allow,deny
+    Deny from all
+</DirectoryMatch>
+
+# Deny access to node_modules (shouldn't be in public directory but just in case)
+<DirectoryMatch "node_modules">
+    Order allow,deny
+    Deny from all
+</DirectoryMatch>
+
+# Deny access to package.json and similar files
+<FilesMatch "(package\.json|package-lock\.json|\.gitignore|\.htaccess)$">
+    Order allow,deny
+    Deny from all
+    # But allow .htaccess to work
+    <FilesMatch "^\.htaccess$">
+        Allow from all
+    </FilesMatch>
+</FilesMatch>
+
+# Protect logs directory
+<DirectoryMatch "logs">
+    Order allow,deny
+    Deny from all
+</DirectoryMatch>
+
+# ====================================================
+# PREVENT DIRECTORY LISTING
+# ====================================================
+Options -Indexes
+
+# ====================================================
+# CUSTOM ERROR PAGES (Optional)
+# ====================================================
+# ErrorDocument 404 /404.json
+# ErrorDocument 500 /500.json
+# ErrorDocument 403 /403.json
+
+# ====================================================
+# FILE UPLOAD LIMITS
+# ====================================================
+# Maximum upload file size (10MB for images)
+# Note: This may be overridden by php.ini or server config
+LimitRequestBody 10485760
+
+# ====================================================
+# TIMEOUT SETTINGS
+# ====================================================
+# Keep connection alive
+<IfModule mod_headers.c>
+    Header set Connection keep-alive
+</IfModule>
+
+# ====================================================
+# CHARACTER ENCODING
+# ====================================================
+AddDefaultCharset UTF-8
+
+# ====================================================
+# LOGGING (Optional - for debugging)
+# ====================================================
+# Uncomment for detailed logging (disable in production for performance)
+# LogLevel warn
+# ErrorLog logs/error.log
+# CustomLog logs/access.log combined
+
+# ====================================================
+# IP BLOCKING (Optional - for security)
+# ====================================================
+# Uncomment and add malicious IPs if needed
+# <Limit GET POST PUT DELETE>
+#     Order Allow,Deny
+#     Deny from 123.456.789.0
+#     Deny from 987.654.321.0
+#     Allow from all
+# </Limit>
+
+# ====================================================
+# RATE LIMITING (Basic protection)
+# ====================================================
+# Note: Rate limiting is handled by Express.js in the application
+# This is a backup at Apache level (requires mod_evasive)
+# <IfModule mod_evasive24.c>
+#     DOSHashTableSize 3097
+#     DOSPageCount 10
+#     DOSSiteCount 100
+#     DOSPageInterval 1
+#     DOSSiteInterval 1
+#     DOSBlockingPeriod 60
+# </IfModule>
+
+# ====================================================
+# TRUST PROXY CONFIGURATION
+# ====================================================
+# Trust proxy is configured in Node.js application code:
+# app.set('trust proxy', true);
+# 
+# This allows Express to correctly determine client IP from:
+# - X-Forwarded-For header
+# - X-Real-IP header
+# - Other proxy headers set by CloudLinux/cPanel
+
+# Make sure these headers are passed through
+<IfModule mod_headers.c>
+    RequestHeader set X-Forwarded-Proto "https" env=HTTPS
+</IfModule>
+
+# ====================================================
+# ADDITIONAL CLOUDLINUX OPTIMIZATIONS
+# ====================================================
+# Set resource limits if available (CloudLinux LVE)
+# <IfModule lsapi_module>
+#     # Adjust based on your hosting plan
+#     lsapi_backend_max_process 35
+#     lsapi_backend_max_idle 0
+# </IfModule>
+
+# ====================================================
+# NOTES FOR PRODUCTION
+# ====================================================
+# 1. Monitor server logs regularly
+# 2. Keep Node.js and dependencies updated
+# 3. Test CORS from frontend after any changes
+# 4. Adjust PassengerMinInstances based on traffic
+# 5. Consider IP whitelisting for admin routes
+# 6. Set up monitoring/alerts for downtime
+# 7. Regular database backups (automated)
+# 8. Test error pages return proper JSON
+#
+# To restart Passenger after changes:
+# - Touch src/index.js: touch src/index.js
+# - Or use cPanel's Node.js app restart button
+# ====================================================
+
+# END OF .HTACCESS

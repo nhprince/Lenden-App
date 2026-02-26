@@ -1,0 +1,73 @@
+name: lenden_flutter
+description: "Lenden - Multi-Shop Business Management System"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # State Management
+  flutter_riverpod: ^2.6.1
+
+  # HTTP & Networking
+  dio: ^5.7.0
+
+  # Routing
+  go_router: ^14.8.1
+
+  # Storage
+  flutter_secure_storage: ^9.2.4
+  shared_preferences: ^2.5.3
+
+  # UI
+  google_fonts: ^6.2.1
+  fl_chart: ^0.71.0
+  shimmer: ^3.0.0
+  flutter_animate: ^4.5.2
+  cached_network_image: ^3.4.1
+
+  # PDF
+  pdf: ^3.11.2
+  printing: ^5.13.5
+
+  # Utilities
+  intl: ^0.20.2
+  image_picker: ^1.1.2
+  flutter_image_compress: ^2.3.0
+  uuid: ^4.5.1
+  flutter_local_notifications: ^17.2.2
+  timezone: ^0.9.4
+  connectivity_plus: ^6.0.5
+
+  # Toast / Snackbar
+  fluttertoast: ^8.2.12
+
+  # Icons
+  lucide_icons: ^0.257.0
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/images/splash.png
+  android_12:
+    image: assets/images/splash.png
+    color: "#ffffff"
