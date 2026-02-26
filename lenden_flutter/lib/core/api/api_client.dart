@@ -84,7 +84,13 @@ class ApiClient {
             message = error.response?.data['message'] ?? error.response?.data['error'] ?? message;
           } else if (error.type == DioExceptionType.connectionTimeout) {
             message = 'Connection timed out';
+          } else if (error.type == DioExceptionType.connectionError) {
+            message = 'Connection Error: ${error.message}';
           }
+          
+          // Log for deep debugging on physical device
+          print('API ERROR [${config.method}] ${config.uri}: $message');
+          print('ERROR TYPE: ${error.type}');
           
           Fluttertoast.showToast(msg: message);
         }

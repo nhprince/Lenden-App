@@ -32,27 +32,12 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 1000, // limit each IP to 1000 requests per windowMs
-  message: 'Too many requests from this IP, please try again later.',
-  standardHeaders: true,
-  legacyHeaders: false,
-  validate: { trustProxy: false } // Fixed: Allow trust proxy true for cPanel
-});
-
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 50, // limit each IP to 50 requests per windowMs for sensitive routes
-  message: 'Too many login attempts, please try again later.',
-  standardHeaders: true,
-  legacyHeaders: false,
-  validate: { trustProxy: false } // Fixed: Allow trust proxy true for cPanel
-});
+// Rate limiting (Disabled for debugging mobile connection)
+const limiter = (req, res, next) => next();
+const authLimiter = (req, res, next) => next();
 
 // Middleware
-app.use(cors(corsOptions));
+app.use(cors()); // Allow all origins for debugging
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
