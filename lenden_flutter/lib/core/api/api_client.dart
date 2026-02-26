@@ -20,6 +20,7 @@ class ApiClient {
       receiveTimeout: const Duration(seconds: 15),
       headers: {
         'Content-Type': 'application/json',
+        'User-Agent': 'Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Mobile Safari/537.36',
       },
     ));
 
